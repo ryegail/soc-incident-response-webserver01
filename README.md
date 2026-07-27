@@ -18,7 +18,7 @@ A blue-team log investigation: correlating raw `auth.log` / `syslog.log` data in
 timeline, SIEM-style detection rules, severity-rated incident classification, and an incident
 response workflow from detection through closure.
 
-**[Full Report (PDF)](./report/Security_Monitoring_Incident_Response_Report.pdf)**
+**[Full Report (PDF)](./report/CA-BT-04_Incident_Response_Report.pdf)**
 
 ---
 
