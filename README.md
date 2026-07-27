@@ -1,10 +1,37 @@
-# Security Monitoring & Incident Response — webserver01
+[README.md](https://github.com/user-attachments/files/30424947/README.md)
+# 🛡️ Security Monitoring & Incident Response — webserver01
+
+**Case File: CA-BT-04 | Blue Team Track — Project 04**
+
+![Project](https://img.shields.io/badge/PROJECT-Security%20Monitoring%20%26%20IR-0d6efd?style=flat-square)
+![Status](https://img.shields.io/badge/STATUS-COMPLETED-brightgreen?style=flat-square)
+![Severity](https://img.shields.io/badge/OVERALL%20SEVERITY-HIGH-red?style=flat-square)
+
+![Events Analysed](https://img.shields.io/badge/Events%20Analysed-9-6c757d?style=flat-square)
+![Low](https://img.shields.io/badge/Low-1-17a2b8?style=flat-square)
+![Medium](https://img.shields.io/badge/Medium-1-e6a020?style=flat-square)
+![High](https://img.shields.io/badge/High-7-d9534f?style=flat-square)
+
+---
 
 A blue-team log investigation: correlating raw `auth.log` / `syslog.log` data into a full attack
 timeline, SIEM-style detection rules, severity-rated incident classification, and an incident
 response workflow from detection through closure.
 
 **[Full Report (PDF)](./report/Security_Monitoring_Incident_Response_Report.pdf)**
+
+---
+
+## Table of Contents
+
+- [Summary](#summary)
+- [Attack Chain](#attack-chain)
+- [Indicators of Compromise](#indicators-of-compromise)
+- [Detection Rules](#detection-rules)
+- [What's in the Report](#whats-in-the-report)
+- [Skills Demonstrated](#skills-demonstrated)
+- [Repo Structure](#repo-structure)
+- [Disclaimer](#disclaimer)
 
 ---
 
@@ -112,5 +139,12 @@ Full rule files: [`detections/`](./detections/)
     └── syslog.log      # raw system log (source data)
 ```
 
-The logs are synthetic data used for training purposes; all IPs are drawn from
-documentation-reserved ranges (RFC 5737 `TEST-NET` blocks) and do not correspond to real hosts.
+## Disclaimer ⚠️
+
+This project was completed as part of a Blue Team incident response training exercise. Both
+log files analyzed (`auth.log`, `syslog.log`) are synthetic and generated for educational
+purposes — every IP address involved (`198.51.100.23`, `192.0.2.99`, `203.0.113.7`, `203.0.113.22`)
+falls within documentation-reserved ranges (RFC 5737 `TEST-NET-1/2/3`) and cannot resolve to a
+real host. No real systems were accessed, attacked, or affected as part of this investigation.
+The IOCs and Sigma detection rules in this repository are provided for educational and
+detection-engineering reference only.
