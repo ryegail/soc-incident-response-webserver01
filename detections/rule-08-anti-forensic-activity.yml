@@ -1,0 +1,30 @@
+title: Shell History Cleared (Anti-Forensic Activity)
+id: 372965b7-37ee-4bcf-8ed8-029751eac9a9
+status: experimental
+description: |
+    Detects commands that clear or truncate shell history files, or invoke
+    the history -c builtin. This has no legitimate operational purpose for
+    a normal user and is a common technique used by attackers to hinder
+    incident response and forensic reconstruction.
+references:
+    - "CA-BT-04 Incident Response Report (Event 07: bash_history truncated and history -c executed, 03:48:51-03:48:59, immediately after the backdoor and cron job were planted)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auditd
+detection:
+    selection:
+        message|contains:
+            - 'history -c'
+            - '> .bash_history'
+            - '> ~/.bash_history'
+    condition: selection
+falsepositives:
+    - Rare - shared/kiosk systems that intentionally clear history for
+      privacy on shell exit
+level: high
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+    - attack.t1070.003

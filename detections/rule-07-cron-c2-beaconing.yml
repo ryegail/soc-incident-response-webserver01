@@ -1,0 +1,34 @@
+title: Cron Job Piping Downloaded Script Into Shell (Malware Downloader / C2)
+id: 9cd479a1-011e-4f14-9b96-67f5752cdb9b
+status: experimental
+description: |
+    Detects a crontab entry or cron execution invoking curl or wget and
+    piping the response directly into bash or sh, targeting a destination
+    outside the organisation's egress allow-list. Piping a downloaded
+    script directly into a shell is a well-known malware delivery pattern;
+    on a fixed interval it functions as both a persistence mechanism and a
+    C2 beacon.
+references:
+    - "CA-BT-04 Incident Response Report (Event 06: cron entry running curl piped to bash every 10 minutes against 192.0.2.99, installed 03:48:26, beaconing confirmed in syslog at 03:20:04 / 03:30:06 / 03:40:11)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: cron
+detection:
+    selection:
+        message|re: '(curl|wget).*\|\s*(bash|sh)'
+    filter:
+        destination|cidr:
+            - '10.0.0.0/8'
+            - '203.0.113.0/24'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate deployment scripts using a curl|bash install pattern
+      (should be migrated to an allow-listed internal package mirror)
+level: high
+tags:
+    - attack.persistence
+    - attack.command_and_control
+    - attack.t1053.003
+    - attack.t1105

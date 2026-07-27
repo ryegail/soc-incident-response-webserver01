@@ -1,0 +1,32 @@
+title: SSH Reconnect Immediately After Forced Disconnect
+id: 82914fdf-1146-4164-b2b3-ff3a55ab2a19
+status: experimental
+description: |
+    Detects a new SSH connection from a source IP within 60 seconds of that
+    same IP being disconnected for exceeding MaxAuthTries ("Too many
+    authentication failures"). Automated brute-force tools (e.g. Hydra)
+    reconnect immediately after being cut off; a human operator does not
+    retry within seconds. Note: reliably evaluating the 60-second ordering
+    requires a correlation-capable backend (e.g. a Sigma correlation rule
+    or SIEM-native sequence/transaction search) rather than a single
+    stateless detection block.
+references:
+    - "CA-BT-04 Incident Response Report (Event 02: disconnect/reconnect pattern at 03:23:26 and 03:32:29)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection_disconnect:
+        message|contains: 'Too many authentication failures'
+    selection_reconnect:
+        message|contains: 'Connection from'
+    timeframe: 60s
+    condition: selection_disconnect and selection_reconnect | by src_ip
+falsepositives:
+    - Unstable network causing legitimate rapid reconnect attempts
+level: medium
+tags:
+    - attack.credential_access
+    - attack.t1110.001

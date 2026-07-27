@@ -1,0 +1,31 @@
+title: Multiple Failed SSH Logins (Brute Force)
+id: fcb4fb54-a964-4f4c-bae9-9ee2220a54c2
+status: experimental
+description: |
+    Detects 5 or more failed SSH authentication attempts (failed password or
+    invalid user) from a single source IP within a 10-minute window. A
+    legitimate user makes at most one or two typos; this volume, especially
+    against usernames that do not exist on the host, is the signature of
+    automated credential-guessing tooling.
+references:
+    - "CA-BT-04 Incident Response Report (Event 02: 46 failed attempts from 198.51.100.23, 03:14:02-03:43:56, preceding compromise at 03:45:16)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection:
+        message|contains:
+            - 'Failed password'
+            - 'Invalid user'
+    timeframe: 10m
+    condition: selection | count(message) by src_ip >= 5
+falsepositives:
+    - Legitimate user repeatedly mistyping credentials
+    - Misconfigured automated service retrying failed connections
+level: medium
+tags:
+    - attack.credential_access
+    - attack.t1110
+    - attack.t1110.001

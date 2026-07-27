@@ -1,0 +1,30 @@
+title: New Privileged (Sudo-Enabled) Account Created
+id: b0c822aa-70ec-411c-8e32-3b4a845b2a95
+status: experimental
+description: |
+    Detects creation of a new local user account, or that account being
+    added to the sudo/wheel/admin group, without a matching approved
+    change-ticket reference. New accounts, especially ones immediately
+    granted sudo, are a primary persistence technique.
+references:
+    - "CA-BT-04 Incident Response Report (Event 05: useradd sysupdate; usermod -aG sudo sysupdate, 03:47:11-03:47:31)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection_useradd:
+        message|contains: 'new user'
+    selection_group:
+        message|contains|all:
+            - 'usermod'
+            - '-aG sudo'
+    condition: selection_useradd or selection_group
+falsepositives:
+    - Approved onboarding of a new administrator, tracked by change ticket
+level: high
+tags:
+    - attack.persistence
+    - attack.t1136
+    - attack.t1136.001

