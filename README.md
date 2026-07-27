@@ -139,7 +139,7 @@ Full rule files: [`detections/`](./detections/)
     └── syslog.log      # raw system log (source data)
 ```
 
-## Disclaimer ⚠️
+## Disclaimer 
 
 This project was completed as part of a Blue Team incident response training exercise. Both
 log files analyzed (`auth.log`, `syslog.log`) are synthetic and generated for educational
