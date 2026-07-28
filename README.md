@@ -122,7 +122,7 @@ Full rule files: [`detections/`](./detections/)
 ```
 .
 ├── report/
-│   └── Security_Monitoring_Incident_Response_Report.pdf   # full report
+│   └── CA-BT-04_Incident_Response_Report.pdf   # full report
 ├── detections/
 │   ├── rule-01-ssh-bruteforce.yml                          # Sigma detection rules
 │   ├── rule-02-login-unrecognised-source.yml
